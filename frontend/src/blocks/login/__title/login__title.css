@@ -1,0 +1,13 @@
+.login__title{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 29px;
+    /* identical to box height */
+
+    margin-top:50px;
+    margin: 50px 0;
+
+    color: #FFFFFF;
+}

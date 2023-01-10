@@ -1,0 +1,21 @@
+.header{
+    width:880px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    z-index: 0;
+    border-bottom: 1px solid  #545454;
+}
+
+@media screen and (max-width:1024px){
+    .header{
+        width: calc(100% - (1024px - 880px));
+    }
+}
+
+@media screen and (max-width:586px){
+    .header{
+        width: 100%;
+    }
+}
