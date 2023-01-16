@@ -10,8 +10,8 @@ export function Card({
                      }) {
     const currentUser = React.useContext(CurrentUserContext)
 
-    const isOwn = card.owner._id === currentUser._id;
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isOwn = (card.owner._id === currentUser._id) || (card.owner === currentUser._id);
+    const isLiked = card.likes.some((i )=>( i._id === currentUser._id) || (i === currentUser._id));
     const cardDeleteButtonClassName = (
         `element__remove-btn ${isOwn ? 'element__remove-btn' : 'element__remove-btn_hidden'}`
     );

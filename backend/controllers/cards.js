@@ -6,9 +6,16 @@ const BadRequestErr = require('../errors/forbidden-err');
 
 const createCard = async (req, res, next) => {
   try {
-    console.log(req.user._id);
+    //console.log(req.user._id);
     const { name, link } = req.body;
-    const card = await Card.create({ name, link, owner: req.user._id });
+    //const ownerId = req.user;
+    const ownerId = req.user._id
+    const card = (await Card.create({name, link, owner: ownerId}));
+   // const card = (await Card.create({name, link}).populate('owner'));
+    //const card = await Card.create({ name, link, owner: req.user._id });
+    //const card = await Card.create({ name, link }, owner: req.user._id);
+    console.log(req.user)
+    console.log(card)
     return res.status(201).send(card);
   } catch (err) {
     if (err.name === 'ValidationError') {
@@ -20,7 +27,9 @@ const createCard = async (req, res, next) => {
 
 const getCards = async (req, res, next) => {
   try {
-    const cards = await Card.find({}).populate('owner').populate('likes');
+    //const cards = await Card.find({}).populate('owner').populate('likes');
+    const cards = await Card.find({}).populate(['owner', 'likes']);
+    //const cards = await Card.find({});
     return res.send(cards);
   } catch (err) {
     return next(err);
@@ -30,7 +39,7 @@ const getCards = async (req, res, next) => {
 const deleteCard = (req, res, next) => {
   const userId = req.user._id;
 
-  Card.findById({ _id: req.params.cardId })
+  Card.findById({ _id: req.params._id })
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Невозможно найти');
@@ -38,7 +47,7 @@ const deleteCard = (req, res, next) => {
       if (!card.owner.equals(userId)) {
         throw new ForbiddenError('Невозможно удалить');
       }
-      Card.findByIdAndRemove(req.params._id)
+      Card.findByIdAndRemove({ _id: req.params._id })
         .then(() => res.send({ message: 'Карточка удалена' })).catch(next);
     })
     .catch((err) => {

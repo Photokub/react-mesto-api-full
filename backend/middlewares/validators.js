@@ -1,5 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
-const { validator } = require('validator');
+const  validator  = require('validator');
 
 module.exports.validateReg = celebrate({
   body: Joi.object().keys({
@@ -59,8 +59,7 @@ module.exports.validateCardCreation = celebrate({
 });
 
 module.exports.validateCardId = celebrate({
-  body: Joi.object().keys({
-    cardId: Joi.string()
-      .required().hex().length(24),
+  params: Joi.object().keys({
+    _id: Joi.string().required().hex().length(24),
   }),
 });

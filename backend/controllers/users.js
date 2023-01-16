@@ -43,6 +43,7 @@ const createUser = (req, res, next) => {
       name,
       about,
       avatar,
+      //_id: user._id,
     }))
     .then((user) => res.send(user))
     .catch((err) => {
@@ -120,6 +121,19 @@ const getUserProfile = (req, res, next) => {
     })
     .catch(next);
 };
+
+// const getUserProfile = (req, res, next) => {
+//   User.findById(req.user._id)
+//     .then((dataUser) => {
+//       if (!dataUser) {
+//         throw new NotFoundError('Пользователь не найден');
+//       }
+//       console.log(dataUser);
+//       return res.send(dataUser);
+//     })
+//     .catch(next);
+// };
+
 
 const getUserInfo = (req, res, next) => {
   User.findById(req.params.userId)

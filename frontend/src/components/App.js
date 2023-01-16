@@ -11,7 +11,7 @@ import {AddPlacePopup} from "./AddPlacePopup";
 import {ConfirmPopup} from "./ConfirmPopup";
 import {Login} from "./Login.js";
 import {Register} from "./Register";
-import {Route, Switch, Redirect, Link} from 'react-router-dom';
+import {Route, Switch, Redirect, Link, useHistory} from 'react-router-dom';
 import ProtectedRoute from "./ProtectedRoute";
 import {InfoTooltip} from "./InfoTooltip";
 import * as Auth from '../utils/Auth.js';
@@ -35,11 +35,23 @@ function App() {
         username: "", email: ""
     })
 
+
+    // useEffect(() => {
+    //     Promise.all([api.getDefaultCards(), api.getUserInfo()])
+    //         .then(([data, dataUser]) => {
+    //             setCards(data);
+    //             setCurrentUser(dataUser)
+    //         })
+    //         .catch((err) => {
+    //             console.log(`Ошибка ${err}`)
+    //         })
+    // }, []);
+
     useEffect(() => {
         Promise.all([api.getDefaultCards(), api.getUserInfo()])
-            .then(([data, dataUser]) => {
-                setCards(data);
-                setCurrentUser(dataUser)
+            .then(([cards, user]) => {
+                setCards(cards);
+                setCurrentUser(user)
             })
             .catch((err) => {
                 console.log(`Ошибка ${err}`)
@@ -96,11 +108,21 @@ function App() {
         })
     }
 
+    // function handleCardLike(card) {
+    //     const isLiked = card.likes.some((i) => (i._id === currentUser._id) || (i.id === currentUser._id))  ;
+    //
+    //     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+    //         setCards((state) => state.map((c) => (c._id === card._id) || (c.id === card._id) ? newCard : c));
+    //     }).catch((err) => {
+    //         console.log(`Ошибка ${err}`)
+    //     })
+    // }
+
     function handleCardLike(card) {
-        const isLiked = card.likes.some(i => i._id === currentUser._id);
+        const isLiked = card.likes.some((i) => (i._id === currentUser._id) || (i.id === currentUser._id))  ;
 
         api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-            setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+            setCards((state) => state.map((c) => (c._id === card._id) ? newCard : c));
         }).catch((err) => {
             console.log(`Ошибка ${err}`)
         })
@@ -125,15 +147,23 @@ function App() {
         })
     }
 
-    const authenticate = useCallback((data) => {
-        localStorage.setItem('jwt', data.token)
+    const history = useHistory();
+    // const authenticate = useCallback((data) => {
+    //     localStorage.setItem('jwt', data.token)
+    //     setLoggedIn(true)
+    // }, []);
+
+    const authenticate = useCallback(() => {
+        //localStorage.setItem('jwt', data.token)
         setLoggedIn(true)
+       // history.push('/')
     }, []);
 
     const register = useCallback(async ({password, email}) => {
         try {
             const res = await Auth.register({password, email});
-            authenticate(res);
+           // authenticate(res);
+           // authenticate();
             setIsInfoTooltipPopupOpen(true)
             setUserData({password, email})
             return res;
@@ -148,10 +178,15 @@ function App() {
                 if (!data) {
                     setIsInfoTooltipPopupOpen(true)
                 }
-                if (data.token) {
-                    authenticate(data)
-                    setUserData({password, email})
-                }
+                // if (data.token) {
+                //     //authenticate(data)
+                //     authenticate()
+                //     setUserData({password, email})
+                //     //setLoggedIn(true)
+                //     //history.push('/')
+                // }
+                authenticate()
+                setUserData({password, email})
             } catch {
                 setIsInfoTooltipPopupOpen(true)
                 console.log("Неверное имя или пароль")
@@ -159,16 +194,36 @@ function App() {
         }
     )
 
+    // const checkToken = useCallback(async () => {
+    //     try {
+    //         const jwt = localStorage.getItem('jwt');
+    //         if (!jwt) {
+    //             throw new Error('no token');
+    //         }
+    //         const user = await Auth.getContent(jwt)
+    //         if (user) {
+    //             setLoggedIn(true)
+    //             setUserData(user.data);
+    //         }
+    //     } catch {
+    //     } finally {
+    //         setIsInfoTooltipPopupOpen(false)
+    //     }
+    // }, []);
+
+
     const checkToken = useCallback(async () => {
         try {
-            const jwt = localStorage.getItem('jwt');
-            if (!jwt) {
-                throw new Error('no token');
-            }
-            const user = await Auth.getContent(jwt)
+            // const jwt = localStorage.getItem('jwt');
+            // if (!jwt) {
+            //     throw new Error('no token');
+            // }
+            const user = await Auth.getContent()
             if (user) {
                 setLoggedIn(true)
-                setUserData(user.data);
+                setUserData(user);
+                //setUserData(user.data);
+                //history.push('/')
             }
         } catch {
         } finally {
@@ -180,10 +235,14 @@ function App() {
         checkToken()
     }, [checkToken]);
 
+    // useEffect(() => {
+    //     checkToken()
+    // }, [loggedIn, checkToken]);
+
 
     const logOut = useCallback(() => {
             setLoggedIn(false);
-            localStorage.removeItem('jwt');
+            //localStorage.removeItem('jwt');
             setUserData({username: "", email: ""})
         }, []
     )

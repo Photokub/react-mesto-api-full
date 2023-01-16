@@ -1,12 +1,15 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 
 const { validateLogin, validateReg } = require('./middlewares/validators');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
 
-const { PORT = 3000, BASE_PATH } = process.env;
+const { PORT = 3001, BASE_PATH } = process.env;
+//const { PORT = 3000, BASE_PATH } = process.env;
 
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
@@ -23,6 +26,21 @@ app.listen(PORT, () => {
 });
 
 app.use(express.json());
+app.use(cookieParser());
+
+const allowedCors = [
+  'http://localhost:3000'
+];
+
+const corsOptions = {
+  origin: allowedCors,
+  optionSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use(requestLogger);  // подключаем логгер запросов
 
