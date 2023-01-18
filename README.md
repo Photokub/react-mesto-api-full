@@ -2,7 +2,7 @@
 
 
 ### IP:
-158.160.5.124  
+51.250.1.184  
 #### Frontend:
 https://photokub.domainname.nomoredomains.club  
 #### Backend:
