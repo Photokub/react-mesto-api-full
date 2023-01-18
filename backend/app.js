@@ -30,7 +30,11 @@ app.use(express.json());
 app.use(cookieParser());
 
 const allowedCors = [
-  'http://localhost:3000'
+  'http://localhost:3000',
+  'http://photokub.domainname.nomoredomains.club',
+  'https://photokub.domainname.nomoredomains.club',
+  'http://api.photokub.domainname.nomoredomains.club',
+  'https://api.photokub.domainname.nomoredomains.club',
 ];
 
 const corsOptions = {
