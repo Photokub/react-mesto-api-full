@@ -6,6 +6,7 @@ const NotFoundError = require('../errors/not-found-err');
 const BadRequestErr = require('../errors/bad-request-err');
 const ConflictErr = require('../errors/conflict-err');
 const UnauthorizedErr = require('../errors/unauth-err');
+const { JWT_SECRET } = process.env;
 
 const login = async (req, res, next) => {
   const {
@@ -21,7 +22,7 @@ const login = async (req, res, next) => {
     if (!result) {
       return next(new UnauthorizedErr('Ошибка авторизации 401'));
     }
-    const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
+    const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
     return res.cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: true }).send({ _id: user._id, user: user.email, message: 'Токен jwt передан в cookie' });
   } catch (err) {
     return next(err);
