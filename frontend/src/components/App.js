@@ -36,22 +36,11 @@ function App() {
     })
 
 
-    // useEffect(() => {
-    //     Promise.all([api.getDefaultCards(), api.getUserInfo()])
-    //         .then(([data, dataUser]) => {
-    //             setCards(data);
-    //             setCurrentUser(dataUser)
-    //         })
-    //         .catch((err) => {
-    //             console.log(`Ошибка ${err}`)
-    //         })
-    // }, []);
-
     useEffect(() => {
         Promise.all([api.getDefaultCards(), api.getUserInfo()])
-            .then(([cards, user]) => {
-                setCards(cards);
-                setCurrentUser(user)
+            .then(([data, dataUser]) => {
+                setCards(data);
+                setCurrentUser(dataUser)
             })
             .catch((err) => {
                 console.log(`Ошибка ${err}`)
@@ -108,18 +97,8 @@ function App() {
         })
     }
 
-    // function handleCardLike(card) {
-    //     const isLiked = card.likes.some((i) => (i._id === currentUser._id) || (i.id === currentUser._id))  ;
-    //
-    //     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-    //         setCards((state) => state.map((c) => (c._id === card._id) || (c.id === card._id) ? newCard : c));
-    //     }).catch((err) => {
-    //         console.log(`Ошибка ${err}`)
-    //     })
-    // }
-
     function handleCardLike(card) {
-        const isLiked = card.likes.some((i) => (i._id === currentUser._id) || (i.id === currentUser._id))  ;
+        const isLiked = card.likes.some((i) => (i._id === currentUser._id) || (i === currentUser._id));
 
         api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
             setCards((state) => state.map((c) => (c._id === card._id) ? newCard : c));
@@ -148,22 +127,16 @@ function App() {
     }
 
     const history = useHistory();
-    // const authenticate = useCallback((data) => {
-    //     localStorage.setItem('jwt', data.token)
-    //     setLoggedIn(true)
-    // }, []);
 
-    const authenticate = useCallback(() => {
-        //localStorage.setItem('jwt', data.token)
+    const authenticate = useCallback((data) => {
         setLoggedIn(true)
-       // history.push('/')
+        setCurrentUser(data)
     }, []);
 
     const register = useCallback(async ({password, email}) => {
         try {
             const res = await Auth.register({password, email});
-           // authenticate(res);
-           // authenticate();
+            authenticate(res);
             setIsInfoTooltipPopupOpen(true)
             setUserData({password, email})
             return res;
@@ -178,15 +151,8 @@ function App() {
                 if (!data) {
                     setIsInfoTooltipPopupOpen(true)
                 }
-                // if (data.token) {
-                //     //authenticate(data)
-                //     authenticate()
-                //     setUserData({password, email})
-                //     //setLoggedIn(true)
-                //     //history.push('/')
-                // }
-                authenticate()
                 setUserData({password, email})
+                setLoggedIn(true)
             } catch {
                 setIsInfoTooltipPopupOpen(true)
                 console.log("Неверное имя или пароль")
@@ -194,36 +160,12 @@ function App() {
         }
     )
 
-    // const checkToken = useCallback(async () => {
-    //     try {
-    //         const jwt = localStorage.getItem('jwt');
-    //         if (!jwt) {
-    //             throw new Error('no token');
-    //         }
-    //         const user = await Auth.getContent(jwt)
-    //         if (user) {
-    //             setLoggedIn(true)
-    //             setUserData(user.data);
-    //         }
-    //     } catch {
-    //     } finally {
-    //         setIsInfoTooltipPopupOpen(false)
-    //     }
-    // }, []);
-
-
     const checkToken = useCallback(async () => {
         try {
-            // const jwt = localStorage.getItem('jwt');
-            // if (!jwt) {
-            //     throw new Error('no token');
-            // }
             const user = await Auth.getContent()
             if (user) {
                 setLoggedIn(true)
                 setUserData(user);
-                //setUserData(user.data);
-                //history.push('/')
             }
         } catch {
         } finally {
@@ -233,19 +175,17 @@ function App() {
 
     useEffect(() => {
         checkToken()
-    }, [checkToken]);
+    }, [checkToken])
 
-    // useEffect(() => {
-    //     checkToken()
-    // }, [loggedIn, checkToken]);
-
-
-    const logOut = useCallback(() => {
-            setLoggedIn(false);
-            //localStorage.removeItem('jwt');
-            setUserData({username: "", email: ""})
-        }, []
-    )
+    function logOut() {
+        Auth.logOut()
+            .then((res) => {
+                setLoggedIn(false)
+                history.push('/sign-in')
+            })
+        setLoggedIn(false);
+        setUserData({username: "", email: ""});
+    }
 
     return (
         <CurrentUserContext.Provider value={currentUser}>

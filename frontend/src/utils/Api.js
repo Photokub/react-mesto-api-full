@@ -23,14 +23,6 @@
          })
      }
 
-     // getUserInfo() {
-     //     return fetch(`${this._adress}/users/me`, {
-     //         method: "GET",
-     //         headers: this._headers,
-     //     }).then((res) => this.handleResp(res))
-     // }
-
-
      patchUserInfo({name, about}) {
          return this._request(`${this._adress}/users/me`, {
              method: 'PATCH',
@@ -82,6 +74,7 @@
      patchAvatar(avatar) {
          return this._request(`${this._adress}/users/me/avatar`, {
              method: "PATCH",
+             credentials: 'include',
              headers: this._headers,
              body: JSON.stringify({
                  avatar,
@@ -93,13 +86,9 @@
  export const api = new Api({
      credentials: 'include',
      baseUrl: 'http://localhost:3001',
-     //baseUrl: 'https://nomoreparties.co/v1/cohort-50',
-     //baseUrl: 'http://api.photokub.domainname.nomoredomains.club/',
      headers: {
          "content-type": "application/json",
          'Accept': 'application/json',
-        // "Authorization": "a923fc14-3b54-43fb-958c-955df8eb7a09",
-       // "Authorization": `${token}`,
      }
  })
 

@@ -28,6 +28,11 @@ const login = async (req, res, next) => {
   }
 };
 
+const logOut = (req, res, next) => {
+  res.clearCookie('jwt').send({ message: 'Успешный выход из аккаунта' })
+    .catch(next);
+}
+
 const createUser = (req, res, next) => {
   const {
     name,
@@ -43,7 +48,6 @@ const createUser = (req, res, next) => {
       name,
       about,
       avatar,
-      //_id: user._id,
     }))
     .then((user) => res.send(user))
     .catch((err) => {
@@ -122,19 +126,6 @@ const getUserProfile = (req, res, next) => {
     .catch(next);
 };
 
-// const getUserProfile = (req, res, next) => {
-//   User.findById(req.user._id)
-//     .then((dataUser) => {
-//       if (!dataUser) {
-//         throw new NotFoundError('Пользователь не найден');
-//       }
-//       console.log(dataUser);
-//       return res.send(dataUser);
-//     })
-//     .catch(next);
-// };
-
-
 const getUserInfo = (req, res, next) => {
   User.findById(req.params.userId)
     .orFail(() => new NotFoundError('Пользователь с таким ID не найден'))
@@ -153,6 +144,7 @@ const getUserInfo = (req, res, next) => {
 
 module.exports = {
   login,
+  logOut,
   createUser,
   getUsers,
   patchUserAvatar,
