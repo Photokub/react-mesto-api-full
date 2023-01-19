@@ -49,6 +49,13 @@ app.use(cors(corsOptions));
 
 app.use(requestLogger);  // подключаем логгер запросов
 
+//краш-тест
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 app.post('/signup', validateReg, createUser);
 app.post('/signin', validateLogin, login);
 app.post('/signout', logOut);
