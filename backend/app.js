@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
 
 const { validateLogin, validateReg } = require('./middlewares/validators');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -30,6 +31,7 @@ app.listen(PORT, () => {
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(helmet());
 
 const allowedCors = [
   'http://localhost:3000/',
@@ -44,7 +46,7 @@ const corsOptions = {
   origin: allowedCors,
   optionSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization', 'Cookie'],
   credentials: true,
 };
 
