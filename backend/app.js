@@ -11,7 +11,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const app = express();
 
 //const { PORT = 3001, BASE_PATH } = process.env;
-const { PORT, BASE_PATH } = process.env;
+const { PORT, BASE_PATH, JWT_SECRET } = process.env;
 
 const { login, logOut, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
@@ -25,6 +25,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', () => {
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
   console.log(`Ссылка на сервер ${BASE_PATH}`);
+  console.log(`секретный jwt ${JWT_SECRET}`)
 });
 
 app.use(express.json());
