@@ -70,4 +70,4 @@ app.use('*', (req, res, next) => next(new NotFoundError('404 Старница н
 
 app.use(errorLogger); // подключаем логгер ошибок
 
-app.use(require('./middlewares/errors'));
+//app.use(require('./middlewares/errors'));
