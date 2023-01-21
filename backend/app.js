@@ -32,36 +32,21 @@ app.use(express.json());
 app.use(cookieParser());
 
 const allowedCors = [
-  'http://localhost:3000',
-  'http://photokub.domainname.nomoredomains.club',
-  'https://photokub.domainname.nomoredomains.club',
-  'http://api.photokub.domainname.nomoredomains.club',
-  'https://api.photokub.domainname.nomoredomains.club',
-  'http://photokub.domainname.nomoredomains.club',
+  'http://localhost:3000/',
+  'http://photokub.domainname.nomoredomains.club/',
+  'https://photokub.domainname.nomoredomains.club/',
+  'http://api.photokub.domainname.nomoredomains.club/',
+  'https://api.photokub.domainname.nomoredomains.club/',
+  'http://photokub.domainname.nomoredomains.club/',
 ];
 
 const corsOptions = {
-  origin: [
-    'http://localhost:3000',
-    'http://photokub.domainname.nomoredomains.club',
-    'https://photokub.domainname.nomoredomains.club',
-    'http://api.photokub.domainname.nomoredomains.club',
-    'https://api.photokub.domainname.nomoredomains.club',
-    'http://photokub.domainname.nomoredomains.club',
-  ],
+  origin: allowedCors,
   optionSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
   credentials: true,
 };
-
-// const corsOptions = {
-//   origin: allowedCors,
-//   optionSuccessStatus: 200,
-//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
-//   allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
-//   credentials: true,
-// };
 
 app.use(cors(corsOptions));
 
