@@ -40,6 +40,7 @@ const allowedCors = [
   'http://api.photokub.domainname.nomoredomains.club/',
   'https://api.photokub.domainname.nomoredomains.club/',
   'http://photokub.domainname.nomoredomains.club/',
+  'http://photokub.domainname.nomoredomains.club/sign-in'
 ];
 
 const corsOptions = {
