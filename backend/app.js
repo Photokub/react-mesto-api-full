@@ -40,7 +40,8 @@ const allowedCors = [
   'http://api.photokub.domainname.nomoredomains.club/',
   'https://api.photokub.domainname.nomoredomains.club/',
   'http://photokub.domainname.nomoredomains.club/',
-  'http://photokub.domainname.nomoredomains.club/sign-in'
+  'http://photokub.domainname.nomoredomains.club/sign-in',
+  'http://api.photokub.domainname.nomoredomains.club/signin'
 ];
 
 app.use(function(req, res, next) {
@@ -56,7 +57,7 @@ app.use(function(req, res, next) {
   // Если это предварительный запрос, добавляем нужные заголовки
   if (method === 'OPTIONS') {
     // разрешаем кросс-доменные запросы любых типов (по умолчанию)
-    res.header('Access-Control-Allow-Headers', requestHeaders);
+    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
     return res.end();
   }
 
