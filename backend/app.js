@@ -19,20 +19,6 @@ const auth = require('./middlewares/auth');
 
 const NotFoundError = require('./errors/not-found-err');
 
-mongoose.connect('mongodb://localhost:27017/mestodb', () => {
-  console.log('Подключение базы mestodb');
-});
-
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-  console.log(`Ссылка на сервер ${BASE_PATH}`);
-  console.log(`секретный jwt ${JWT_SECRET}`)
-});
-
-app.use(express.json());
-app.use(cookieParser());
-app.use(helmet());
-
 const allowedCors = [
   'http://localhost:3000/',
   'http://photokub.domainname.nomoredomains.club/',
@@ -74,6 +60,14 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+mongoose.connect('mongodb://localhost:27017/mestodb', () => {
+  console.log('Подключение базы mestodb');
+});
+
+app.use(express.json());
+app.use(cookieParser());
+app.use(helmet());
+
 app.use(requestLogger);  // подключаем логгер запросов
 
 //краш-тест
@@ -95,5 +89,11 @@ app.use('/cards', require('./routes/cards'));
 app.use('*', (req, res, next) => next(new NotFoundError('404 Старница не найдена')));
 
 app.use(errorLogger); // подключаем логгер ошибок
+
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
+  console.log(`Ссылка на сервер ${BASE_PATH}`);
+  console.log(`секретный jwt ${JWT_SECRET}`)
+});
 
 app.use(require('./middlewares/errors'));
