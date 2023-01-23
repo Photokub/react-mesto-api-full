@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
-//const cors = require('cors');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
@@ -19,16 +19,17 @@ const auth = require('./middlewares/auth');
 
 const NotFoundError = require('./errors/not-found-err');
 
-// const allowedCors = [
-//   'http://localhost:3000/',
-//   'http://photokub.domainname.nomoredomains.club/',
-//   'https://photokub.domainname.nomoredomains.club/',
-//   'http://api.photokub.domainname.nomoredomains.club/',
-//   'https://api.photokub.domainname.nomoredomains.club/',
-//   'http://photokub.domainname.nomoredomains.club/',
-//   'http://photokub.domainname.nomoredomains.club/sign-in',
-//   'http://api.photokub.domainname.nomoredomains.club/signin'
-// ];
+const allowedCors = [
+  'http://192.168.1.2:3000',
+  'http://localhost:3000/',
+  'http://photokub.domainname.nomoredomains.club/',
+  'https://photokub.domainname.nomoredomains.club/',
+  'http://api.photokub.domainname.nomoredomains.club/',
+  'https://api.photokub.domainname.nomoredomains.club/',
+  'http://photokub.domainname.nomoredomains.club/',
+  'http://photokub.domainname.nomoredomains.club/sign-in',
+  'http://api.photokub.domainname.nomoredomains.club/signin'
+];
 
 // app.use(function(req, res, next) {
 //   const { origin } = req.headers; // Сохраняем источник запроса в переменную origin
@@ -50,17 +51,21 @@ const NotFoundError = require('./errors/not-found-err');
 //   next();
 // });
 
-// const corsOptions = {
-//   origin: allowedCors,
-//   optionSuccessStatus: 200,
-//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
-//   allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
-//   credentials: true,
-// };
-//
-// app.use(cors(corsOptions));
+const corsOptions = {
+  origin: allowedCors,
+  optionSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 mongoose.connect('mongodb://localhost:27017/mestodb', () => {
+  console.log('Подключение базы mestodb');
+});
+
+mongoose.connect('mongodb://127.0.0.1:27017/mestodb', () => {
   console.log('Подключение базы mestodb');
 });
 
