@@ -85,7 +85,7 @@
 
  export const api = new Api({
      credentials: 'include',
-     baseUrl: 'http://api.photokub.domainname.nomoredomains.club',
+     baseUrl: 'https://api.photokub.domainname.nomoredomains.club',
      headers: {
          "content-type": "application/json",
          'Accept': 'application/json',
