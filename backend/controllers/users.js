@@ -23,7 +23,7 @@ const login = async (req, res, next) => {
       return next(new UnauthorizedErr('Ошибка авторизации 401'));
     }
     const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
-    return res.cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: true }).send({ _id: user._id, user: user.email, message: 'Токен jwt передан в cookie' });
+    return res.cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: "none" }).send({ _id: user._id, user: user.email, message: 'Токен jwt передан в cookie' });
   } catch (err) {
     return next(err);
   }
