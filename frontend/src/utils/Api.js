@@ -88,7 +88,7 @@
      baseUrl: 'https://api.photokub.domainname.nomoredomains.club',
      headers: {
          "content-type": "application/json",
-         'Accept': 'application/json',
+         //'Accept': 'application/json',
      }
  })
 

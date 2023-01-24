@@ -5,7 +5,7 @@ export const register = ({email, password}) => {
         method: 'POST',
         mode: "cors",
         headers: {
-            'Accept': 'application/json',
+            //'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({password, email})
@@ -19,7 +19,7 @@ export const authorize = ({password, email}) => {
         credentials: 'include',
         mode: "cors",
         headers: {
-            'Accept': 'application/json',
+           // 'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({password, email})
@@ -32,7 +32,7 @@ export const getContent = () => {
         method: 'GET',
         credentials: 'include',
         headers: {
-            'Accept': 'application/json',
+           // 'Accept': 'application/json',
             'Content-Type': 'application/json',
         }
     })
