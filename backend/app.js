@@ -65,9 +65,9 @@ app.use(cors(corsOptions));
 //   console.log('Подключение базы mestodb');
 // });
 
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb', () => {
-  console.log('Подключение базы mestodb');
-});
+// mongoose.connect('mongodb://127.0.0.1:27017/mestodb', () => {
+//   console.log('Подключение базы mestodb');
+// });
 
 app.use(express.json());
 app.use(cookieParser());
@@ -95,10 +95,26 @@ app.use('*', (req, res, next) => next(new NotFoundError('404 Старница н
 
 app.use(errorLogger); // подключаем логгер ошибок
 
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-  console.log(`Ссылка на сервер ${BASE_PATH}`);
-  console.log(`секретный jwt ${JWT_SECRET}`)
-});
+// app.listen(PORT, () => {
+//   console.log(`App listening on port ${PORT}`);
+//   console.log(`Ссылка на сервер ${BASE_PATH}`);
+//   console.log(`секретный jwt ${JWT_SECRET}`)
+// });
+
+async function start() {
+  try {
+    await mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
+    console.log('Подключение базы mestodb');
+    app.listen(PORT, () => {
+      console.log(`App listening on port ${PORT}`);
+      console.log(`Ссылка на сервер ${BASE_PATH}`);
+      console.log(`секретный jwt ${JWT_SECRET}`)
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+start();
 
 app.use(require('./middlewares/errors'));
