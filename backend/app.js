@@ -103,7 +103,7 @@ app.use(errorLogger); // подключаем логгер ошибок
 
 async function start() {
   try {
-    mongoose.connect('mongodb://localhost:27017/mestodb', () => {
+    mongoose.connect('mongodb://127.0.0.1:27017/mestodb', () => {
       console.log('Подключено к базе MongoDB');
       app.listen(PORT, () => {
         console.log(`App listening on port ${PORT}`);
