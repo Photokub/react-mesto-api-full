@@ -6,15 +6,15 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 
-const { validateLogin, validateReg } = require('./middlewares/validators');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+const {validateLogin, validateReg} = require('./middlewares/validators');
+const {requestLogger, errorLogger} = require('./middlewares/logger');
 
 const app = express();
 
 //const { PORT = 3001, BASE_PATH } = process.env;
-const { PORT = 3000, BASE_PATH, JWT_SECRET } = process.env;
+const {PORT = 3000, BASE_PATH, JWT_SECRET} = process.env;
 
-const { login, logOut, createUser } = require('./controllers/users');
+const {login, logOut, createUser} = require('./controllers/users');
 const auth = require('./middlewares/auth');
 
 const NotFoundError = require('./errors/not-found-err');
@@ -103,12 +103,13 @@ app.use(errorLogger); // подключаем логгер ошибок
 
 async function start() {
   try {
-    await mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
-    console.log('Подключение базы mestodb');
-    app.listen(PORT, () => {
-      console.log(`App listening on port ${PORT}`);
-      console.log(`Ссылка на сервер ${BASE_PATH}`);
-      console.log(`секретный jwt ${JWT_SECRET}`)
+    mongoose.connect('mongodb://localhost:27017/mestodb', () => {
+      console.log('Подключено к базе MongoDB');
+      app.listen(PORT, () => {
+        console.log(`App listening on port ${PORT}`);
+        console.log(`Ссылка на сервер ${BASE_PATH}`);
+        console.log(`секретный jwt ${JWT_SECRET}`);
+      });
     });
   } catch (error) {
     console.log(error);
