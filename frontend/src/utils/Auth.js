@@ -1,7 +1,7 @@
-export const BASE_URL = 'http://api.photokub.domainname.nomoredomains.club/';
+export const BASE_URL = 'http://api.photokub.domainname.nomoredomains.club';
 
 export const register = ({email, password}) => {
-    return fetch(`${BASE_URL}signup`, {
+    return fetch(`${BASE_URL}/signup`, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -14,7 +14,7 @@ export const register = ({email, password}) => {
 };
 
 export const authorize = ({password, email}) => {
-    return fetch(`${BASE_URL}signin`, {
+    return fetch(`${BASE_URL}/signin`, {
         method: 'POST',
         credentials: 'include',
         mode: "cors",
@@ -28,7 +28,7 @@ export const authorize = ({password, email}) => {
 };
 
 export const getContent = () => {
-    return fetch(`${BASE_URL}users/me`, {
+    return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -40,7 +40,7 @@ export const getContent = () => {
 }
 
 export const logOut =() => {
-    return fetch(`${BASE_URL}signout`, {
+    return fetch(`${BASE_URL}/signout`, {
         method: 'POST',
         credentials: 'include',
         headers: {

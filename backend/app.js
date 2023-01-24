@@ -22,11 +22,11 @@ const NotFoundError = require('./errors/not-found-err');
 const allowedCors = [
   'http://192.168.1.2:3000',
   'http://localhost:3000/',
-  'http://photokub.domainname.nomoredomains.club/',
-  'https://photokub.domainname.nomoredomains.club/',
-  'http://api.photokub.domainname.nomoredomains.club/',
-  'https://api.photokub.domainname.nomoredomains.club/',
-  'http://photokub.domainname.nomoredomains.club/',
+  'http://photokub.domainname.nomoredomains.club',
+  'https://photokub.domainname.nomoredomains.club',
+  'http://api.photokub.domainname.nomoredomains.club',
+  'https://api.photokub.domainname.nomoredomains.club',
+  'http://photokub.domainname.nomoredomains.club',
   'http://photokub.domainname.nomoredomains.club/sign-in',
   'http://api.photokub.domainname.nomoredomains.club/signin'
 ];
