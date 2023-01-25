@@ -36,6 +36,8 @@ function App() {
     })
 
 
+    const history = useHistory();
+
     useEffect(() => {
         Promise.all([api.getDefaultCards(), api.getUserInfo()])
             .then(([data, dataUser]) => {
@@ -45,7 +47,7 @@ function App() {
             .catch((err) => {
                 console.log(`Ошибка ${err}`)
             })
-    }, []);
+    }, [loggedIn]);
 
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true)
@@ -126,24 +128,18 @@ function App() {
         })
     }
 
-    const history = useHistory();
-
-    const authenticate = useCallback((data) => {
-        setLoggedIn(true)
-        setCurrentUser(data)
-    }, []);
-
     const register = useCallback(async ({password, email}) => {
         try {
             const res = await Auth.register({password, email});
-            authenticate(res);
+            //authenticate(res);
             setIsInfoTooltipPopupOpen(true)
             setUserData({password, email})
+            history.push('/')
             return res;
         } catch {
             setIsInfoTooltipPopupOpen(true)
         }
-    }, [authenticate]);
+    }, [history]);
 
     const login = useCallback(async ({password, email}) => {
             try {
@@ -153,11 +149,12 @@ function App() {
                 }
                 setUserData({password, email})
                 setLoggedIn(true)
+                history.push('/')
             } catch {
                 setIsInfoTooltipPopupOpen(true)
                 console.log("Неверное имя или пароль")
             }
-        }
+        },[history]
     )
 
     const checkToken = useCallback(async () => {
@@ -166,12 +163,14 @@ function App() {
             if (user) {
                 setLoggedIn(true)
                 setUserData(user);
+                setCurrentUser(user)
+                history.push('/')
             }
         } catch {
         } finally {
             setIsInfoTooltipPopupOpen(false)
         }
-    }, []);
+    }, [history]);
 
     useEffect(() => {
         checkToken()
