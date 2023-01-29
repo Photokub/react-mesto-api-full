@@ -6,7 +6,7 @@ const NotFoundError = require('../errors/not-found-err');
 const BadRequestErr = require('../errors/bad-request-err');
 const ConflictErr = require('../errors/conflict-err');
 const UnauthorizedErr = require('../errors/unauth-err');
-const { JWT_SECRET } = process.env;
+const {JWT_SECRET} = process.env;
 
 const login = async (req, res, next) => {
   const {
@@ -14,7 +14,7 @@ const login = async (req, res, next) => {
     password,
   } = req.body;
   try {
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({email}).select('+password');
     if (!user) {
       return next(new UnauthorizedErr('Ошибка авторизации 401'));
     }
@@ -22,15 +22,20 @@ const login = async (req, res, next) => {
     if (!result) {
       return next(new UnauthorizedErr('Ошибка авторизации 401'));
     }
-    const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
-    return res.cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: "none" }).send({ _id: user._id, user: user.email, message: 'Токен jwt передан в cookie' });
+    const token = jwt.sign({_id: user._id}, JWT_SECRET, {expiresIn: '7d'});
+    return res.cookie('jwt', token, {
+      maxAge: 3600000 * 24 * 7,
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+    }).send({_id: user._id, user: user.email, message: 'Токен jwt передан в cookie'});
   } catch (err) {
     return next(err);
   }
 };
 
 const logOut = (req, res, next) => {
-  res.clearCookie('jwt').send({ message: 'Успешный выход из аккаунта' })
+  res.clearCookie('jwt').send({message: 'Успешный выход из аккаунта'})
     .catch(next);
 }
 
@@ -69,7 +74,7 @@ const getUsers = (req, res, next) => {
 };
 
 const updateUserData = (req, res, next) => {
-  const { body } = req;
+  const {body} = req;
   User.findByIdAndUpdate(
     req.user._id,
     {
@@ -92,10 +97,10 @@ const updateUserData = (req, res, next) => {
 };
 
 const patchUserAvatar = (req, res, next) => {
-  const { avatar } = req.body;
+  const {avatar} = req.body;
   User.findByIdAndUpdate(
     req.user._id,
-    { avatar },
+    {avatar},
     {
       new: true,
       runValidators: true,
@@ -139,7 +144,8 @@ const getUserInfo = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         return next(new BadRequestErr('Переданы некорректные данные пользователя'));
-      } return next(err);
+      }
+      return next(err);
     });
 };
 

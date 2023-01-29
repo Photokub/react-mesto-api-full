@@ -134,7 +134,7 @@ function App() {
             //authenticate(res);
             setIsInfoTooltipPopupOpen(true)
             setUserData({password, email})
-            history.push('/')
+            //history.push('/')
             return res;
         } catch {
             setIsInfoTooltipPopupOpen(true)
