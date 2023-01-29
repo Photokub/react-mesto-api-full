@@ -149,7 +149,7 @@ function App() {
                 }
                 setUserData({password, email})
                 setLoggedIn(true)
-                history.push('/')
+                //history.push('/')
             } catch {
                 setIsInfoTooltipPopupOpen(true)
                 console.log("Неверное имя или пароль")
