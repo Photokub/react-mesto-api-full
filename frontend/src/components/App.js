@@ -56,30 +56,30 @@ function App() {
         checkToken()
     }, [checkToken])
 
-    useEffect(() => {
-        Promise.all([api.getDefaultCards(), api.getUserInfo()])
-            .then(([data, dataUser]) => {
-                setCards(data);
-                setCurrentUser(dataUser)
-            })
-            .catch((err) => {
-                console.log(`Ошибка ${err}`)
-            })
-    }, [checkToken]);
-
-       // useEffect(() => {
+    // useEffect(() => {
     //     Promise.all([api.getDefaultCards(), api.getUserInfo()])
     //         .then(([data, dataUser]) => {
-    //             const jwt = Auth.getContent();
-    //             if(jwt){
-    //                 setCards(data);
-    //                 setCurrentUser(dataUser)
-    //             }
+    //             setCards(data);
+    //             setCurrentUser(dataUser)
     //         })
     //         .catch((err) => {
     //             console.log(`Ошибка ${err}`)
     //         })
-    // }, [loggedIn]);
+    // }, [checkToken]);
+
+       useEffect(() => {
+        Promise.all([api.getDefaultCards(), api.getUserInfo()])
+            .then(([data, dataUser]) => {
+                const jwt = Auth.getContent();
+                if(jwt){
+                    setCards(data);
+                    setCurrentUser(dataUser)
+                }
+            })
+            .catch((err) => {
+                console.log(`Ошибка ${err}`)
+            })
+    }, []);
 
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true)
@@ -160,18 +160,21 @@ function App() {
         })
     }
 
+    const authenticate = useCallback((data) => {
+        setLoggedIn(true)
+    }, []);
+
     const register = useCallback(async ({password, email}) => {
         try {
             const res = await Auth.register({password, email});
-            //authenticate(res);
+            authenticate(res);
             setIsInfoTooltipPopupOpen(true)
             setUserData({password, email})
-            setLoggedIn(true)
             return res;
         } catch {
             setIsInfoTooltipPopupOpen(true)
         }
-    }, [history]);
+    }, [[authenticate]]);
 
     const login = useCallback(async ({password, email}) => {
             try {
@@ -185,7 +188,8 @@ function App() {
                 setIsInfoTooltipPopupOpen(true)
                 console.log("Неверное имя или пароль")
             }
-        },[history]
+        }
+        //,[history]
     )
 
     // const checkToken = useCallback(async () => {
