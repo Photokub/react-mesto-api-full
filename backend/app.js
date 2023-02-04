@@ -66,9 +66,7 @@ app.use('*', (req, res, next) => next(new NotFoundError('404 Старница н
 
 app.use(errorLogger); // подключаем логгер ошибок
 
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb'
-  .then(() => console.log('MongoDB connection established.'))
-  .catch((error) => console.error("MongoDB connection failed:", error.message)));
+mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
