@@ -35,8 +35,26 @@ function App() {
         username: "", email: ""
     })
 
-
     const history = useHistory();
+
+    const checkToken = useCallback(async () => {
+        try {
+            const user = await Auth.getContent()
+            if (user) {
+                setLoggedIn(true)
+                setUserData(user);
+                setCurrentUser(user)
+                history.push('/')
+            }
+        } catch {
+        } finally {
+            setIsInfoTooltipPopupOpen(false)
+        }
+    }, [history]);
+
+    useEffect(() => {
+        checkToken()
+    }, [checkToken])
 
     useEffect(() => {
         Promise.all([api.getDefaultCards(), api.getUserInfo()])
@@ -47,7 +65,21 @@ function App() {
             .catch((err) => {
                 console.log(`Ошибка ${err}`)
             })
-    }, [loggedIn]);
+    }, [checkToken]);
+
+       // useEffect(() => {
+    //     Promise.all([api.getDefaultCards(), api.getUserInfo()])
+    //         .then(([data, dataUser]) => {
+    //             const jwt = Auth.getContent();
+    //             if(jwt){
+    //                 setCards(data);
+    //                 setCurrentUser(dataUser)
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             console.log(`Ошибка ${err}`)
+    //         })
+    // }, [loggedIn]);
 
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true)
@@ -134,7 +166,7 @@ function App() {
             //authenticate(res);
             setIsInfoTooltipPopupOpen(true)
             setUserData({password, email})
-            //history.push('/')
+            setLoggedIn(true)
             return res;
         } catch {
             setIsInfoTooltipPopupOpen(true)
@@ -149,7 +181,6 @@ function App() {
                 }
                 setUserData({password, email})
                 setLoggedIn(true)
-                //history.push('/')
             } catch {
                 setIsInfoTooltipPopupOpen(true)
                 console.log("Неверное имя или пароль")
@@ -157,24 +188,24 @@ function App() {
         },[history]
     )
 
-    const checkToken = useCallback(async () => {
-        try {
-            const user = await Auth.getContent()
-            if (user) {
-                setLoggedIn(true)
-                setUserData(user);
-                setCurrentUser(user)
-                history.push('/')
-            }
-        } catch {
-        } finally {
-            setIsInfoTooltipPopupOpen(false)
-        }
-    }, [history]);
+    // const checkToken = useCallback(async () => {
+    //     try {
+    //         const user = await Auth.getContent()
+    //         if (user) {
+    //             setLoggedIn(true)
+    //             setUserData(user);
+    //             setCurrentUser(user)
+    //             history.push('/')
+    //         }
+    //     } catch {
+    //     } finally {
+    //         setIsInfoTooltipPopupOpen(false)
+    //     }
+    // }, [history]);
 
-    useEffect(() => {
-        checkToken()
-    }, [checkToken])
+    // useEffect(() => {
+    //     checkToken()
+    // }, [checkToken])
 
     function logOut() {
         Auth.logOut()
