@@ -96,7 +96,7 @@ app.use('*', (req, res, next) => next(new NotFoundError('404 Старница н
 app.use(errorLogger); // подключаем логгер ошибок
 
 //mongoose.connect('mongodb://localhost:27017/mestodb');
-//mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
+mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 
 
 // mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
@@ -114,21 +114,21 @@ app.listen(PORT, () => {
   console.log(`секретный jwt ${JWT_SECRET}`)
 });
 
-async function start() {
-  try {
-    mongoose.connect('mongodb://127.0.0.1:27017/mestodb', () => {
-      console.log('Подключено к базе MongoDB');
-      app.listen(PORT, () => {
-        console.log(`App listening on port ${PORT}`);
-        console.log(`Ссылка на сервер ${BASE_PATH}`);
-        console.log(`секретный jwt ${JWT_SECRET}`);
-      });
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-start();
+// async function start() {
+//   try {
+//     mongoose.connect('mongodb://127.0.0.1:27017/mestodb', () => {
+//       console.log('Подключено к базе MongoDB');
+//       app.listen(PORT, () => {
+//         console.log(`App listening on port ${PORT}`);
+//         console.log(`Ссылка на сервер ${BASE_PATH}`);
+//         console.log(`секретный jwt ${JWT_SECRET}`);
+//       });
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+//
+// start();
 
 app.use(require('./middlewares/errors'));
