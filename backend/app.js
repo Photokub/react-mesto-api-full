@@ -95,7 +95,8 @@ app.use('*', (req, res, next) => next(new NotFoundError('404 Старница н
 
 app.use(errorLogger); // подключаем логгер ошибок
 
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
+mongoose.connect('mongodb://localhost:27017/mestodb');
+//mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 
 
 // mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
