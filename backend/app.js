@@ -95,27 +95,36 @@ app.use('*', (req, res, next) => next(new NotFoundError('404 Старница н
 
 app.use(errorLogger); // подключаем логгер ошибок
 
-// app.listen(PORT, () => {
-//   console.log(`App listening on port ${PORT}`);
-//   console.log(`Ссылка на сервер ${BASE_PATH}`);
-//   console.log(`секретный jwt ${JWT_SECRET}`)
-// });
+mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true
 
-async function start() {
-  try {
-    mongoose.connect('mongodb://127.0.0.1:27017/mestodb', () => {
-      console.log('Подключено к базе MongoDB');
-      app.listen(PORT, () => {
-        console.log(`App listening on port ${PORT}`);
-        console.log(`Ссылка на сервер ${BASE_PATH}`);
-        console.log(`секретный jwt ${JWT_SECRET}`);
-      });
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
+})
+  .then(() => console.log('MongoDB connection established.'))
+  .catch((error) => console.error("MongoDB connection failed:", error.message))
 
-start();
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
+  console.log(`Ссылка на сервер ${BASE_PATH}`);
+  console.log(`секретный jwt ${JWT_SECRET}`)
+});
+
+// async function start() {
+//   try {
+//     mongoose.connect('mongodb://127.0.0.1:27017/mestodb', () => {
+//       console.log('Подключено к базе MongoDB');
+//       app.listen(PORT, () => {
+//         console.log(`App listening on port ${PORT}`);
+//         console.log(`Ссылка на сервер ${BASE_PATH}`);
+//         console.log(`секретный jwt ${JWT_SECRET}`);
+//       });
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+//
+// start();
 
 app.use(require('./middlewares/errors'));
