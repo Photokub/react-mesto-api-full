@@ -68,17 +68,18 @@ function App() {
     // }, [checkToken]);
 
        useEffect(() => {
-        Promise.all([api.getDefaultCards(), api.getUserInfo()])
-            .then(([data, dataUser]) => {
-                const jwt = Auth.getContent();
-                if(jwt){
-                    setCards(data);
-                    setCurrentUser(dataUser)
-                }
-            })
-            .catch((err) => {
-                console.log(`Ошибка ${err}`)
-            })
+           if(loggedIn){
+               Promise.all([api.getDefaultCards(), api.getUserInfo()])
+                   .then(([data, dataUser]) => {
+                       {
+                           setCards(data);
+                           setCurrentUser(dataUser)
+                       }
+                   })
+                   .catch((err) => {
+                       console.log(`Ошибка ${err}`)
+                   })
+           }
     }, []);
 
     function handleEditAvatarClick() {
