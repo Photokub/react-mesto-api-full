@@ -190,9 +190,9 @@ function App() {
         }
     }, [history, loggedIn]);
 
-    useEffect(() => {
-        checkToken()
-    }, [checkToken])
+    // useEffect(() => {
+    //     checkToken()
+    // }, [checkToken])
 
     // const checkToken = useCallback(async () => {
     //     try {
