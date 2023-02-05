@@ -150,7 +150,8 @@ function App() {
     const register = useCallback(async ({password, email}) => {
         try {
             const res = await Auth.register({password, email});
-            authenticate(res);
+            //authenticate(res);
+            setLoggedIn(true)
             setIsInfoTooltipPopupOpen(true)
             setUserData({password, email})
             return res;
@@ -190,9 +191,9 @@ function App() {
         }
     }, [history, loggedIn]);
 
-    // useEffect(() => {
-    //     checkToken()
-    // }, [checkToken])
+    useEffect(() => {
+        checkToken()
+    }, [loggedIn, history])
 
     // const checkToken = useCallback(async () => {
     //     try {
