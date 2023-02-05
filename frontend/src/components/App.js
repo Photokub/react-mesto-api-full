@@ -37,25 +37,6 @@ function App() {
 
     const history = useHistory();
 
-    const checkToken = useCallback(async () => {
-        try {
-            const user = await Auth.getContent()
-            if (user) {
-                setLoggedIn(true)
-                setUserData(user);
-                setCurrentUser(user)
-                history.push('/')
-            }
-        } catch {
-        } finally {
-            setIsInfoTooltipPopupOpen(false)
-        }
-    }, [history]);
-
-    useEffect(() => {
-        checkToken()
-    }, [checkToken])
-
     // useEffect(() => {
     //     Promise.all([api.getDefaultCards(), api.getUserInfo()])
     //         .then(([data, dataUser]) => {
@@ -80,7 +61,7 @@ function App() {
                        console.log(`Ошибка ${err}`)
                    })
            }
-    }, []);
+    }, [loggedIn]);
 
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true)
@@ -162,6 +143,7 @@ function App() {
     }
 
     const authenticate = useCallback((data) => {
+        setCurrentUser(data)
         setLoggedIn(true)
     }, []);
 
@@ -192,6 +174,25 @@ function App() {
         }
         //,[history]
     )
+
+    const checkToken = useCallback(async () => {
+        try {
+            const user = await Auth.getContent()
+            if (user) {
+                setLoggedIn(true)
+                setCurrentUser(user)
+                setUserData(user);
+                history.push('/')
+            }
+        } catch {
+        } finally {
+            setIsInfoTooltipPopupOpen(false)
+        }
+    }, [history, loggedIn]);
+
+    useEffect(() => {
+        checkToken()
+    }, [checkToken])
 
     // const checkToken = useCallback(async () => {
     //     try {
