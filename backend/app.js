@@ -70,7 +70,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
-  console.log(`Ссылка на сервер ${BASE_PATH}`);
   console.log(`секретный jwt ${JWT_SECRET}`)
 });
 

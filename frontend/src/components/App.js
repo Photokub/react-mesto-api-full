@@ -37,17 +37,6 @@ function App() {
 
     const history = useHistory();
 
-    // useEffect(() => {
-    //     Promise.all([api.getDefaultCards(), api.getUserInfo()])
-    //         .then(([data, dataUser]) => {
-    //             setCards(data);
-    //             setCurrentUser(dataUser)
-    //         })
-    //         .catch((err) => {
-    //             console.log(`Ошибка ${err}`)
-    //         })
-    // }, [checkToken]);
-
        useEffect(() => {
            if(loggedIn){
                Promise.all([api.getDefaultCards(), api.getUserInfo()])
@@ -173,7 +162,6 @@ function App() {
                 console.log("Неверное имя или пароль")
             }
         }
-        //,[history]
     )
 
     const checkToken = useCallback(async () => {
@@ -190,29 +178,6 @@ function App() {
             setIsInfoTooltipPopupOpen(false)
         }
     }, [history, loggedIn]);
-
-    // useEffect(() => {
-    //     checkToken()
-    // }, [loggedIn, history])
-
-    // const checkToken = useCallback(async () => {
-    //     try {
-    //         const user = await Auth.getContent()
-    //         if (user) {
-    //             setLoggedIn(true)
-    //             setUserData(user);
-    //             setCurrentUser(user)
-    //             history.push('/')
-    //         }
-    //     } catch {
-    //     } finally {
-    //         setIsInfoTooltipPopupOpen(false)
-    //     }
-    // }, [history]);
-
-    // useEffect(() => {
-    //     checkToken()
-    // }, [checkToken])
 
     function logOut() {
         Auth.logOut()
