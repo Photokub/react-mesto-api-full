@@ -61,7 +61,7 @@ function App() {
                        console.log(`Ошибка ${err}`)
                    })
            }
-    }, [loggedIn]);
+    }, [loggedIn, history]);
 
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true)
@@ -143,9 +143,9 @@ function App() {
     }
 
     const authenticate = useCallback((data) => {
-        setCurrentUser(data)
         setLoggedIn(true)
-    }, []);
+        setCurrentUser(data)
+    }, [setLoggedIn]);
 
     const register = useCallback(async ({password, email}) => {
         try {
