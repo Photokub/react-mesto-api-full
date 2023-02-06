@@ -1,5 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
-const  validator  = require('validator');
+const validator = require('validator');
 
 module.exports.validateReg = celebrate({
   body: Joi.object().keys({
@@ -7,7 +7,14 @@ module.exports.validateReg = celebrate({
     password: Joi.string().required().min(5),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().uri(),
+    avatar: Joi.string()
+      .required()
+      .custom((value) => {
+        if (!validator.isURL(value)) {
+          throw new Error('ссылка не валидна');
+        }
+        return value;
+      }),
   }),
 });
 
