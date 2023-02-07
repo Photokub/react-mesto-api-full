@@ -139,7 +139,6 @@ function App() {
     const register = useCallback(async ({password, email}) => {
         try {
             const res = await Auth.register({password, email});
-            //authenticate(res);
             setLoggedIn(true)
             setIsInfoTooltipPopupOpen(true)
             setUserData({password, email})

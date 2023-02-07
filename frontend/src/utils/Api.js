@@ -85,10 +85,11 @@
 
  export const api = new Api({
      credentials: 'include',
+     //TODO//baseUrl: 'http://localhost:3000',
      baseUrl: 'https://api.photokub.domainname.nomoredomains.club',
      headers: {
          "content-type": "application/json",
-         //'Accept': 'application/json',
+         'Accept': 'application/json',
      }
  })
 
