@@ -1,33 +1,30 @@
 require('dotenv').config();
 
 const express = require('express');
+const { errors } = require('celebrate');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 
-const {validateLogin, validateReg} = require('./middlewares/validators');
-const {requestLogger, errorLogger} = require('./middlewares/logger');
+const { validateLogin, validateReg } = require('./middlewares/validators');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
 
-const {PORT = 3000, BASE_PATH, JWT_SECRET} = process.env;
+const { PORT = 3000, JWT_SECRET } = process.env;
 
-const {login, logOut, createUser} = require('./controllers/users');
+const { login, logOut, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 
 const NotFoundError = require('./errors/not-found-err');
 
 const allowedCors = [
-  'http://192.168.1.2:3000',
   'http://localhost:3000/',
   'http://photokub.domainname.nomoredomains.club',
   'https://photokub.domainname.nomoredomains.club',
   'http://api.photokub.domainname.nomoredomains.club',
   'https://api.photokub.domainname.nomoredomains.club',
-  'http://photokub.domainname.nomoredomains.club',
-  'http://photokub.domainname.nomoredomains.club/sign-in',
-  'http://api.photokub.domainname.nomoredomains.club/signin'
 ];
 
 const corsOptions = {
@@ -73,4 +70,5 @@ app.listen(PORT, () => {
   console.log(`секретный jwt ${JWT_SECRET}`)
 });
 
+app.use(errors());
 app.use(require('./middlewares/errors'));
