@@ -17,7 +17,7 @@ const createCard = async (req, res, next) => {
     //   return next(new BadRequestErr('Ошибка валидации'));
     // }
     if (err instanceof BadRequestErr) {
-      throw res.send({ message: 'Ошибка валидации' });
+      throw next(new BadRequestErr('Ошибка валидации'));
     }
     return next(err);
     //return next(err);
