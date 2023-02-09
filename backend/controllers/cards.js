@@ -13,7 +13,7 @@ const createCard = async (req, res, next) => {
     console.log(card)
     return res.status(201).send(card);
   } catch (err) {
-    if (err.name === 'ValidationError') {
+    if (err instanceof 'ValidationError') {
       return next(new BadRequestErr('Ошибка валидации'));
     }
     return next(err);
