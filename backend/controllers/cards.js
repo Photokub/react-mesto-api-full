@@ -51,28 +51,6 @@ const deleteCard = (req, res, next) => {
     });
 };
 
-
-//TODO// Card.findById({ _id: req.params._id })
-//   .then((card) => {
-//     if (!card) {
-//       throw new NotFoundError('Невозможно найти');
-//     }
-//     if (!card.owner.equals(userId)) {
-//       throw new ForbiddenError('Невозможно удалить');
-//     }
-//     Card.findByIdAndRemove({ _id: req.params._id })
-//       .then(() => res.send({ message: 'Карточка удалена' })).catch(next);
-//   })
-//   .catch((err) => {
-//     if (err.name === 'CastError') {
-//       return next(new BadRequestErr('Переданы некорректные данные при создании карточки'));
-//     }
-//     return next(err);
-//   });
-// };
-
-
-
 const putLike = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params._id,
