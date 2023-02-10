@@ -30,7 +30,7 @@ const login = async (req, res, next) => {
       secure: true,
     }).send({_id: user._id, user: user.email, message: 'Токен jwt передан в cookie'});
   } catch (err) {
-    return next(err);
+    throw next(err);
   }
 };
 
@@ -57,13 +57,13 @@ const createUser = (req, res, next) => {
     }))
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return next(new BadRequestErr('Переданы некорректные данные пользователя'));
+      if (err instanceof BadRequestErr) {
+        throw next(new BadRequestErr('Переданы некорректные данные пользователя'));
       }
-      if (err.code === 11000) {
-        return next(new ConflictErr(`Пользователь с ${email} уже существует`));
+      if (err instanceof ConflictErr) {
+        throw next(new ConflictErr(`Пользователь с ${email} уже существует`));
       }
-      return next(err);
+      throw next(err);
     });
 };
 
@@ -89,10 +89,10 @@ const updateUserData = (req, res, next) => {
     .orFail(() => new NotFoundError('Ничего не найдено'))
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return next(new BadRequestErr('Передан невалидный id пользователя'));
+      if (err instanceof BadRequestErr) {
+        throw next(new BadRequestErr('Передан невалидный id пользователя'));
       }
-      return next(err);
+      throw next(err);
     });
 };
 
@@ -113,10 +113,10 @@ const patchUserAvatar = (req, res, next) => {
       return res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return next(new BadRequestErr('Переданы некорректные данные при обновлении аватара'));
+      if (err instanceof BadRequestErr) {
+        throw next(new BadRequestErr('Переданы некорректные данные при обновлении аватара'));
       }
-      return next(err);
+      throw next(err);
     });
 };
 
