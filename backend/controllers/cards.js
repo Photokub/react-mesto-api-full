@@ -13,14 +13,10 @@ const createCard = async (req, res, next) => {
     console.log(card)
     return res.status(201).send(card);
   } catch (err) {
-    // if (err.name === 'ValidationError') {
-    //   return next(new BadRequestErr('Ошибка валидации'));
-    // }
     if (err instanceof BadRequestErr) {
-      return next(new BadRequestErr('Ошибка валидации'));
+      throw next(new BadRequestErr('Ошибка валидации'));
     }
     return next(err);
-    //return next(err);
   }
 };
 
@@ -29,7 +25,7 @@ const getCards = async (req, res, next) => {
     const cards = await Card.find({}).populate(['owner', 'likes']);
     return res.send(cards);
   } catch (err) {
-    return next(err);
+    throw next(err);
   }
 };
 
@@ -49,9 +45,9 @@ const deleteCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new BadRequestErr('Переданы некорректные данные при создании карточки'));
+        throw next(new BadRequestErr('Переданы некорректные данные при создании карточки'));
       }
-      return next(err);
+      throw next(err);
     });
 };
 
@@ -69,9 +65,9 @@ const putLike = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new BadRequestErr({message: 'Переданы некорректные данные для постановки/снятии лайка.'}));
+        throw next(new BadRequestErr({message: 'Переданы некорректные данные для постановки/снятии лайка.'}));
       }
-      return next(err);
+      throw next(err);
     });
 };
 
@@ -83,15 +79,15 @@ const deleteLike = (req, res, next) => {
   )
     .then((card) => {
       if (!card) {
-        return new NotFoundError('Карточка не обнаружена');
+        throw new NotFoundError('Карточка не обнаружена');
       }
       return res.send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new BadRequestErr({message: 'Переданы некорректные данные для постановки/снятии лайка.'}));
+        throw next(new BadRequestErr({message: 'Переданы некорректные данные для постановки/снятии лайка.'}));
       }
-      return next(err);
+      throw next(err);
     });
 };
 
