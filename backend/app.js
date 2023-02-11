@@ -58,7 +58,7 @@ app.get('/crash-test', () => {
 // app.use('/signin', require('./routes/index'));
 // app.use('/signout', require('./routes/index'));
 
-app.use('', require('./routes/index'));
+app.use('/', require('./routes/index'));
 
 app.use(auth);
 
