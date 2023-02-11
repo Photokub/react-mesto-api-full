@@ -54,12 +54,6 @@ app.post('/signup', validateReg, createUser);
 app.post('/signin', validateLogin, login);
 app.post('/signout', logOut);
 
-//TODO// app.use('/signup', require('./routes/index'));
-// app.use('/signin', require('./routes/index'));
-// app.use('/signout', require('./routes/index'));
-
-// app.use('', require('./routes/index'));
-
 app.use(auth);
 
 app.use('/users', require('./routes/users'));

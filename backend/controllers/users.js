@@ -120,48 +120,17 @@ const patchUserAvatar = (req, res, next) => {
     });
 };
 
-const getUserData = (res) => {
-  if (!res) {
-    throw new NotFoundError('Пользователь не найден');
-  }
-  console.log(res);
-  return res.json();
-}
-
-function cachingDecorator(func) {
-  let cache = new Map();
-
-  return function(res) {
-    if (cache.has(res)) {    // если кеш содержит такой x,
-      return cache.get(res); // читаем из него результат
-    }
-    let result = func(res); // иначе, вызываем функцию
-    cache.set(res, result); // и кешируем (запоминаем) результат
-    return result;
-  };
-}
-
-getUserData = cachingDecorator(getUserData)
-
 const getUserProfile = (req, res, next) => {
   User.findById(req.user._id)
-    .then(
-      return getUserData
-    )
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Пользователь не найден');
+      }
+      console.log(user);
+      return res.send(user);
+    })
     .catch(next);
 };
-
-// const getUserProfile = (req, res, next) => {
-//   User.findById(req.user._id)
-//     .then((user) => {
-//       if (!user) {
-//         throw new NotFoundError('Пользователь не найден');
-//       }
-//       console.log(user);
-//       return res.send(user);
-//     })
-//     .catch(next);
-// };
 
 const getUserInfo = (req, res, next) => {
   User.findById(req.params.userId)
