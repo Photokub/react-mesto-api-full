@@ -42,7 +42,6 @@ app.use(cookieParser());
 app.use(helmet());
 
 app.use(requestLogger);  // подключаем логгер запросов
-app.use(express.static(path.join(__dirname, 'build')));
 
 //краш-тест
 app.get('/crash-test', () => {
