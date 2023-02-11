@@ -120,12 +120,12 @@ const patchUserAvatar = (req, res, next) => {
     });
 };
 
-const getUserData = (userData) => {
-  if (!userData) {
+const getUserData = (user) => {
+  if (!user) {
     throw new NotFoundError('Пользователь не найден');
   }
-  console.log(userData);
-  //return userData;
+  console.log(user);
+  return user;
 }
 
 const getUserProfile = (req, res, next) => {
