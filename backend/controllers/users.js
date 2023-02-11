@@ -131,14 +131,14 @@ const getUserData = (res) => {
 function cachingDecorator(func) {
   let cache = new Map();
 
-  return function(user) {
-    if (cache.has(user)) {    // если кеш содержит такой x,
-      return cache.get(user); // читаем из него результат
+  return function(res) {
+    if (cache.has(res)) {    // если кеш содержит такой x,
+      return cache.get(res); // читаем из него результат
     }
 
-    let result = func(user); // иначе, вызываем функцию
+    let result = func(res); // иначе, вызываем функцию
 
-    cache.set(user, result); // и кешируем (запоминаем) результат
+    cache.set(res, result); // и кешируем (запоминаем) результат
     return result;
   };
 }
@@ -148,7 +148,7 @@ getUserData = cachingDecorator(getUserData)
 const getUserProfile = (req, res, next) => {
   User.findById(req.user._id)
     .then(
-      return getUserData
+      return res.send(getUserData)
     )
     .catch(next);
 };
