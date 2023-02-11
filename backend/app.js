@@ -42,6 +42,7 @@ app.use(cookieParser());
 app.use(helmet());
 
 app.use(requestLogger);  // подключаем логгер запросов
+app.use(express.static(path.join(__dirname, 'build')));
 
 //краш-тест
 app.get('/crash-test', () => {
@@ -67,7 +68,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
-  console.log(`секретный jwt ${JWT_SECRET}`)
+  console.log(`секретный jwt ${JWT_SECRET}`);
 });
 
 app.use(errors());
