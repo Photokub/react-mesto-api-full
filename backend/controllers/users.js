@@ -120,7 +120,7 @@ const patchUserAvatar = (req, res, next) => {
     });
 };
 
-const getUserData = (user) => {
+function getUserData(user)  {
   if (!user) {
     throw new NotFoundError('Пользователь не найден');
   }
@@ -143,10 +143,12 @@ function cachingDecorator(func) {
   };
 }
 
+getUserData = cachingDecorator(getUserData)
+
 const getUserProfile = (req, res, next) => {
   User.findById(req.user._id)
     .then(
-      res.send(getUserData = cachingDecorator(getUserData))
+      res.send(getUserData)
     )
     .catch(next);
 };
