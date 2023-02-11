@@ -50,9 +50,11 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.post('/signup', validateReg, createUser);
-app.post('/signin', validateLogin, login);
-app.post('/signout', logOut);
+// app.post('/signup', validateReg, createUser);
+// app.post('/signin', validateLogin, login);
+// app.post('/signout', logOut);
+
+app.use('/', require('./routes/index'));
 
 app.use(auth);
 
