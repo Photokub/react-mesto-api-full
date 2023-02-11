@@ -128,10 +128,25 @@ const getUserData = (user) => {
   return user;
 }
 
+function cachingDecorator(func) {
+  let cache = new Map();
+
+  return function(user) {
+    if (cache.has(user)) {    // если кеш содержит такой x,
+      return cache.get(user); // читаем из него результат
+    }
+
+    let result = func(user); // иначе, вызываем функцию
+
+    cache.set(user, result); // и кешируем (запоминаем) результат
+    return result;
+  };
+}
+
 const getUserProfile = (req, res, next) => {
   User.findById(req.user._id)
     .then(
-      res.send(getUserData)
+      res.send(getUserData = cachingDecorator(getUserData))
     )
     .catch(next);
 };
