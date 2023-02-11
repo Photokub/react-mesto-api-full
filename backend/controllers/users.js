@@ -148,7 +148,7 @@ getUserData = cachingDecorator(getUserData)
 const getUserProfile = (req, res, next) => {
   User.findById(req.user._id)
     .then(
-      getUserData
+      return getUserData
     )
     .catch(next);
 };
