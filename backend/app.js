@@ -50,13 +50,13 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-// app.post('/signup', validateReg, createUser);
-// app.post('/signin', validateLogin, login);
-// app.post('/signout', logOut);
+app.post('/signup', validateReg, createUser);
+app.post('/signin', validateLogin, login);
+app.post('/signout', logOut);
 
-app.use('/signup', require('./routes/index'));
-app.use('/signin', require('./routes/index'));
-app.use('/signout', require('./routes/index'));
+//TODO// app.use('/signup', require('./routes/index'));
+// app.use('/signin', require('./routes/index'));
+// app.use('/signout', require('./routes/index'));
 
 // app.use('', require('./routes/index'));
 
