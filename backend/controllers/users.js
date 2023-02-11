@@ -135,9 +135,7 @@ function cachingDecorator(func) {
     if (cache.has(res)) {    // если кеш содержит такой x,
       return cache.get(res); // читаем из него результат
     }
-
     let result = func(res); // иначе, вызываем функцию
-
     cache.set(res, result); // и кешируем (запоминаем) результат
     return result;
   };
@@ -148,7 +146,7 @@ getUserData = cachingDecorator(getUserData)
 const getUserProfile = (req, res, next) => {
   User.findById(req.user._id)
     .then(
-      return res.send(getUserData)
+      return getUserData
     )
     .catch(next);
 };
