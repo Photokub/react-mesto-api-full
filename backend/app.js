@@ -54,9 +54,11 @@ app.get('/crash-test', () => {
 // app.post('/signin', validateLogin, login);
 // app.post('/signout', logOut);
 
-app.use('/signup', require('./routes/index'));
-app.use('/signin', require('./routes/index'));
-app.use('/signout', require('./routes/index'));
+// app.use('/signup', require('./routes/index'));
+// app.use('/signin', require('./routes/index'));
+// app.use('/signout', require('./routes/index'));
+
+app.use('', require('./routes/index'));
 
 app.use(auth);
 
