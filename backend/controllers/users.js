@@ -121,23 +121,31 @@ const patchUserAvatar = (req, res, next) => {
     });
 };
 
-// function getUserData(id, res) {
-//   if (!id) {
-//     throw new NotFoundError('Пользователь не найден');
-//   }
-//   return res.send(id);
-// }
-
-const getUserProfile = async (req, res, next) => {
-  try {
-    const userId = await User.findById(req.user._id);
-    if (!userId) {
-      throw new NotFoundError('Пользователь не найден');
-    }
-    return res.send(userId);
-  } catch (err) {
-    throw next(err);
+function getUserData(id, res) {
+  if (!id) {
+    throw new NotFoundError('Пользователь не найден');
   }
+  return res.send(id);
+}
+
+//TODO const getUserProfile = async (req, res, next) => {
+//   try {
+//     const userId = await User.findById(req.user._id);
+//     if (!userId) {
+//       throw new NotFoundError('Пользователь не найден');
+//     }
+//     return res.send(userId);
+//   } catch (err) {
+//     throw next(err);
+//   }
+// };
+
+const getUserProfile = (req, res, next) => {
+  User.findById(req.user._id)
+    .then((user) => {
+      getUserData(user, res);
+    })
+    .catch(next);
 };
 
 // const getUserProfile = (req, res, next) => {
