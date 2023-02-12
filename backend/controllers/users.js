@@ -121,17 +121,20 @@ const patchUserAvatar = (req, res, next) => {
     });
 };
 
-function getUserData(id, res) {
-  if (!id) {
-    throw new NotFoundError('Пользователь не найден');
-  }
-  return res.send(id);
-}
+// function getUserData(id, res) {
+//   if (!id) {
+//     throw new NotFoundError('Пользователь не найден');
+//   }
+//   return res.send(id);
+// }
 
 const getUserProfile = async (req, res, next) => {
   try {
     const userId = await User.findById(req.user._id);
-    getUserData(userId, res);
+    if (!userId) {
+      throw new NotFoundError('Пользователь не найден');
+    }
+    return res.send(userId);
   } catch (err) {
     throw next(err);
   }
