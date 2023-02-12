@@ -74,6 +74,13 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
+function getUserData(id, res, next) {
+  if (!id) {
+    return next(new NotFoundError('Пользователь не найден'));
+  }
+  return res.send(id);
+}
+
 const updateUserData = (req, res, next) => {
   const {body} = req;
   User.findByIdAndUpdate(
@@ -88,7 +95,7 @@ const updateUserData = (req, res, next) => {
     },
   )
     .orFail(() => new NotFoundError('Ничего не найдено'))
-    .then((user) => res.send(user))
+    .then((user) => getUserData(user, res, next))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         throw next(new BadRequestErr('Передан невалидный id пользователя'));
@@ -107,12 +114,7 @@ const patchUserAvatar = (req, res, next) => {
       runValidators: true,
     },
   )
-    .then((user) => {
-      if (!user) {
-        return next(new NotFoundError('Пользователь не найден'));
-      }
-      return res.send(user);
-    })
+    .then((user) => getUserData(user, res, next))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         throw next(new BadRequestErr('Переданы некорректные данные при обновлении аватара'));
@@ -121,23 +123,28 @@ const patchUserAvatar = (req, res, next) => {
     });
 };
 
-function getUserData(id, res, next) {
-  if (!id) {
-    return next(new NotFoundError('Пользователь не найден'));
-  }
-  return res.send(id);
-}
-
-//TODO const getUserProfile = async (req, res, next) => {
-//   try {
-//     const userId = await User.findById(req.user._id);
-//     if (!userId) {
-//       throw new NotFoundError('Пользователь не найден');
-//     }
-//     return res.send(userId);
-//   } catch (err) {
-//     throw next(err);
-//   }
+// TODO// const patchUserAvatar = (req, res, next) => {
+//   const {avatar} = req.body;
+//   User.findByIdAndUpdate(
+//     req.user._id,
+//     {avatar},
+//     {
+//       new: true,
+//       runValidators: true,
+//     },
+//   )
+//     .then((user) => {
+//       if (!user) {
+//         return next(new NotFoundError('Пользователь не найден'));
+//       }
+//       return res.send(user);
+//     })
+//     .catch((err) => {
+//       if (err instanceof mongoose.Error.ValidationError) {
+//         throw next(new BadRequestErr('Переданы некорректные данные при обновлении аватара'));
+//       }
+//       throw next(err);
+//     });
 // };
 
 const getUserProfile = (req, res, next) => {
@@ -148,23 +155,11 @@ const getUserProfile = (req, res, next) => {
     .catch(next);
 };
 
-// TODO//const getUserProfile = (req, res, next) => {
-//   User.findById(req.user._id)
-//     .then((user) => {
-//       if (!user) {
-//         throw new NotFoundError('Пользователь не найден');
-//       }
-//       console.log(user);
-//       return res.send(user);
-//     })
-//     .catch(next);
-// };
-
 const getUserInfo = (req, res, next) => {
   User.findById(req.params.userId)
     .orFail(() => new NotFoundError('Пользователь с таким ID не найден'))
     .then((user) => {
-      getUserData(user, res);
+      getUserData(user, res, next);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
@@ -173,23 +168,6 @@ const getUserInfo = (req, res, next) => {
       return next(err);
     });
 };
-
-// TODO// const getUserInfo = (req, res, next) => {
-//   User.findById(req.params.userId)
-//     .orFail(() => new NotFoundError('Пользователь с таким ID не найден'))
-//     .then((user) => {
-//       if (!user) {
-//         return next(new NotFoundError('Пользователь не найден'));
-//       }
-//       return res.send(user);
-//     })
-//     .catch((err) => {
-//       if (err instanceof mongoose.Error.CastError) {
-//         return next(new BadRequestErr('Переданы некорректные данные пользователя'));
-//       }
-//       return next(err);
-//     });
-// };
 
 module.exports = {
   login,
