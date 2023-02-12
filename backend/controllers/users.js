@@ -121,12 +121,12 @@ const patchUserAvatar = (req, res, next) => {
     });
 };
 
-function getUserData(id, res, next) {
-  if (!id) {
-    return next(new NotFoundError('Пользователь не найден'));
-  }
-  return res.send(id);
-}
+// function getUserData(id, res, next) {
+//   if (!id) {
+//     return next(new NotFoundError('Пользователь не найден'));
+//   }
+//   return res.send(id);
+// }
 
 //TODO const getUserProfile = async (req, res, next) => {
 //   try {
