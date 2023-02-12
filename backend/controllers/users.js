@@ -125,18 +125,14 @@ const patchUserAvatar = (req, res, next) => {
 
 const getUserProfile = (req, res, next) => {
   User.findById(req.user._id)
-    .then((user) => {
-      getUserData(user, res);
-    })
+    .then((user) => getUserData(user, res))
     .catch(next);
 };
 
 const getUserInfo = (req, res, next) => {
   User.findById(req.params.userId)
     .orFail(() => new NotFoundError('Пользователь с таким ID не найден'))
-    .then((user) => {
-      getUserData(user, res, next);
-    })
+    .then((user) => getUserData(user, res, next))
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
         return next(new BadRequestErr('Переданы некорректные данные пользователя'));
