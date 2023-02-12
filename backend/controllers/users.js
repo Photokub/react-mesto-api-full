@@ -148,7 +148,7 @@ const getUserProfile = (req, res, next) => {
     .catch(next);
 };
 
-// const getUserProfile = (req, res, next) => {
+// TODO//const getUserProfile = (req, res, next) => {
 //   User.findById(req.user._id)
 //     .then((user) => {
 //       if (!user) {
@@ -164,10 +164,7 @@ const getUserInfo = (req, res, next) => {
   User.findById(req.params.userId)
     .orFail(() => new NotFoundError('Пользователь с таким ID не найден'))
     .then((user) => {
-      if (!user) {
-        return next(new NotFoundError('Пользователь не найден'));
-      }
-      return res.send(user);
+      getUserData(user, res);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
@@ -176,6 +173,23 @@ const getUserInfo = (req, res, next) => {
       return next(err);
     });
 };
+
+// TODO// const getUserInfo = (req, res, next) => {
+//   User.findById(req.params.userId)
+//     .orFail(() => new NotFoundError('Пользователь с таким ID не найден'))
+//     .then((user) => {
+//       if (!user) {
+//         return next(new NotFoundError('Пользователь не найден'));
+//       }
+//       return res.send(user);
+//     })
+//     .catch((err) => {
+//       if (err instanceof mongoose.Error.CastError) {
+//         return next(new BadRequestErr('Переданы некорректные данные пользователя'));
+//       }
+//       return next(err);
+//     });
+// };
 
 module.exports = {
   login,
