@@ -123,30 +123,6 @@ const patchUserAvatar = (req, res, next) => {
     });
 };
 
-// TODO// const patchUserAvatar = (req, res, next) => {
-//   const {avatar} = req.body;
-//   User.findByIdAndUpdate(
-//     req.user._id,
-//     {avatar},
-//     {
-//       new: true,
-//       runValidators: true,
-//     },
-//   )
-//     .then((user) => {
-//       if (!user) {
-//         return next(new NotFoundError('Пользователь не найден'));
-//       }
-//       return res.send(user);
-//     })
-//     .catch((err) => {
-//       if (err instanceof mongoose.Error.ValidationError) {
-//         throw next(new BadRequestErr('Переданы некорректные данные при обновлении аватара'));
-//       }
-//       throw next(err);
-//     });
-// };
-
 const getUserProfile = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
