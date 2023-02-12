@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
@@ -57,10 +58,10 @@ const createUser = (req, res, next) => {
     }))
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err instanceof BadRequestErr) {
+      if (err instanceof mongoose.Error.ValidationError) {
         throw next(new BadRequestErr('Переданы некорректные данные пользователя'));
       }
-      if (err instanceof ConflictErr) {
+      if (err.code === 11000) {
         throw next(new ConflictErr(`Пользователь с ${email} уже существует`));
       }
       throw next(err);
@@ -89,7 +90,7 @@ const updateUserData = (req, res, next) => {
     .orFail(() => new NotFoundError('Ничего не найдено'))
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err instanceof BadRequestErr) {
+      if (err instanceof mongoose.Error.ValidationError) {
         throw next(new BadRequestErr('Передан невалидный id пользователя'));
       }
       throw next(err);
@@ -113,7 +114,7 @@ const patchUserAvatar = (req, res, next) => {
       return res.send(user);
     })
     .catch((err) => {
-      if (err instanceof BadRequestErr) {
+      if (err instanceof mongoose.Error.ValidationError) {
         throw next(new BadRequestErr('Переданы некорректные данные при обновлении аватара'));
       }
       throw next(err);
@@ -142,7 +143,7 @@ const getUserInfo = (req, res, next) => {
       return res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err instanceof mongoose.Error.CastError) {
         return next(new BadRequestErr('Переданы некорректные данные пользователя'));
       }
       return next(err);

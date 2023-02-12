@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const Card = require('../models/cards');
 
 const NotFoundError = require('../errors/not-found-err');
@@ -13,7 +15,7 @@ const createCard = async (req, res, next) => {
     console.log(card)
     return res.status(201).send(card);
   } catch (err) {
-    if (err instanceof BadRequestErr) {
+    if (err instanceof mongoose.Error.ValidationError) {
       throw next(new BadRequestErr('Ошибка валидации'));
     }
     return next(err);
@@ -44,7 +46,7 @@ const deleteCard = (req, res, next) => {
         .then(() => res.send({message: 'Карточка удалена'})).catch(next);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err instanceof mongoose.Error.CastError) {
         throw next(new BadRequestErr('Переданы некорректные данные при создании карточки'));
       }
       throw next(err);
@@ -64,7 +66,7 @@ const putLike = (req, res, next) => {
       return res.send(card);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err instanceof mongoose.Error.CastError) {
         throw next(new BadRequestErr({message: 'Переданы некорректные данные для постановки/снятии лайка.'}));
       }
       throw next(err);
@@ -84,7 +86,7 @@ const deleteLike = (req, res, next) => {
       return res.send(card);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err instanceof mongoose.Error.CastError) {
         throw next(new BadRequestErr({message: 'Переданы некорректные данные для постановки/снятии лайка.'}));
       }
       throw next(err);
